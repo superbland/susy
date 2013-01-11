@@ -2,17 +2,19 @@
 // String parser
 
 // Global defaults so changes cascade into other functions.
-$susy-span      : false;
-$susy-location  : false;
-$susy-columns   : false;
-$susy-context   : false;
-$susy-gutters   : false;
-$susy-margin    : false;
+$susy-span        : false ;
+$susy-location    : false ;
+$susy-columns     : false ;
+$susy-context     : false ;
+$susy-gutters     : false ;
+$susy-margin      : false ;
 
 @function parse-string($string) {
 
-  // Zero out global variables
+  // Set counter to one.
   $i              : 1     ;
+
+  // Zero out global variables.
   $susy-span      : false ;
   $susy-location  : false ;
   $susy-columns   : false ;

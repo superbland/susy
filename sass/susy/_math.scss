@@ -163,6 +163,9 @@ $margin: 0 !default;
 // VARIABLES ARE PLACEHOLDERS UNTIL PROPER GIRD PARSING CAN BE DONE
 // SYNTAX SUBJECT TO CHANGE
 @function grid-span($string) {
+
+  $string: parse-string($string);
+
   // Identify @media context.
   
   // Parse variables out of context and the mixin string.
@@ -177,4 +180,5 @@ $margin: 0 !default;
 
   // Return the width based on those parsed values.
   // @return grid-span-width($grid-span-span, $grid-span-location, $grid-span-columns, $grid-span-gutter, $grid-span-margin);
+  @return $string;
 }

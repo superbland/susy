@@ -9,7 +9,7 @@ $susy-context   : false;
 $susy-gutters   : false;
 $susy-margin    : false;
 
-@mixin parse-string($string) {
+@function parse-string($string) {
 
   // Zero out global variables
   $i              : 1     ;
@@ -49,4 +49,7 @@ $susy-margin    : false;
     // Bump up list
     $i: $i + 1;
   }
+
+  // Global variables re-written. Spit out the string without changes.
+  @return $string;
 }

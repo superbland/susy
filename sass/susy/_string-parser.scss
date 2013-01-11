@@ -9,6 +9,8 @@ $susy-context     : false ;
 $susy-gutters     : false ;
 $susy-margin      : false ;
 
+// Parse the string into the above global vars.
+// The string just pass through this, the function itself does not return anything useful.
 @function parse-string($string) {
 
   // Set counter to one.
@@ -48,7 +50,7 @@ $susy-margin      : false ;
     }
 
 
-    // Bump up list
+    // Bump up counter
     $i: $i + 1;
   }
 

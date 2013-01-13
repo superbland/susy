@@ -1,32 +1,4 @@
 // ---------------------------------------------------------------------------
-// String parser tools
-
-// Find context
-@function find-context($columns, $gutter, $margin) {
-
-  // If auto columns exist, context needs to be calculated.
-  @if query-list($columns, auto) != false or length(columns) == 1 {
-    @return nth($context, nth(query-list($context, unit($gutter), unit), 1));
-  }
-  @else {
-
-    // Find sum of columns
-    $column-sum: list-sum($columns);
-
-    // Find sum of gutters
-    $gutter-sum: $gutter * (column-count($columns) - 1);
-
-    // Find sum of margin
-    $margin-sum: list-sum($margin);
-    @if type-of($margin) == number {
-      $margin-sum: $margin * 2;
-    }
-
-    @return $column-sum + $gutter-sum + $margin-sum;
-  }
-}
-
-// ---------------------------------------------------------------------------
 // String parser
 
 // Global defaults so changes cascade into other functions.
@@ -39,7 +11,7 @@ $susy-margin      : false ;
 
 // Parse the string into the above global vars.
 // The string just pass through this, the function itself does not return anything useful.
-@function parse-string($string) {
+@function format-string($string) {
 
   // Set counter to one.
   $i              : 1     ;
@@ -84,4 +56,8 @@ $susy-margin      : false ;
 
   // Global variables re-written. Spit out the string without changes.
   @return $string;
+}
+
+@function parse-string($var, $string) {
+  @return find-context($columns, $gutter, $margin);
 }

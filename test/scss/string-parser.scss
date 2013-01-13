@@ -1,0 +1,19 @@
+@import "susy";
+
+// This is the string that might go into span()
+$string: last 2 of 12 push 3;
+
+// If you want just how many columns it spans:
+@debug parse-string(span, $string);
+
+// Find the grid columns or context (of 12, of 3, of (20% 20% 20% 20% 20%))
+@debug parse-string(of, $string);
+
+// Find the location
+@debug parse-string(at, $string);
+
+// Find push
+@debug parse-string(push, $string);
+
+// Pull was not defined, this will return false.
+@debug parse-string(pull, $string);

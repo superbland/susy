@@ -2,10 +2,3 @@
 // Imports
 
 @import "susy";
-
-$string: last 2 of 12 push 3;
-
-@debug parse-string(span, $string);
-@debug parse-string(of, $string);
-@debug parse-string(at, $string);
-@debug parse-string(push, $string);

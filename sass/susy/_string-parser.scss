@@ -37,32 +37,54 @@
   @return $return;
 }
 
-// Extract a sub-list from a list.
-//
-// extract-list($list, $key)
-// $list  : <list>
-//        - May contain strings (keywords) and values.
-// $key  : <string>
-//        - The keyword to look for.
-@function extract-list($list, $key) {
 
-  // blank list.
-  $return: ();
+// ---------------------------------------------------------------------------
+// Parse natural language string
+
+// Retrieve values from the natural language string.
+// parse-string($var, $list)
+// - $var    : <string>
+//           - at/span/of or any other keywords.
+//           - 'span' queries the unprefixed span declaration.
+//           - 'at' can also query first, last, alpha, and omega.
+// - $list   : <list>
+//           - A list like this: last 2 of (1 1 2) push 1
+//
+// Useage:
+// parse-string(at, $list);    // Will return "last" from the above list.
+// parse-string(of, $list);    // Will return "1 1 2".
+// parse-string(span, $list);  // Will return "2".
+@function parse-string($var, $list) {
+
   $found: false;
 
-  // loop through list.
+  // Loop through list.
   @each $item in $list {
-    // If reached a keyword after $key was already found return the list.
-    @if type-of($item) == string and $found == true{
-      @return $return;
+
+    // if 'span' - return the first numeric.
+    // if keyword was found - return the following item.
+    @if (type-of($item) == number and $var == span) or $found == true {
+      @return $item;
     }
-    // If it's the string we're looking for start appending.
-    @elseif $item == $key or $found == true {
-      $return: append($return, $item);
+
+    // 'at' - return 1/last/following value.
+    @elseif $var == at {
+      @if $item == first or $item == alpha {
+        @return 1;
+      }
+      @elseif $item == last or $item == omega {
+        @return last;
+      }
+    }
+
+    // Any keyword - return the following value.
+    @if $item == $var {
       $found: true;
     }
+
   }
 
-  @return $return;
+  // Wasn't found.
+  @return false;
 }
 

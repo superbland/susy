@@ -1,7 +1,7 @@
 @import "susy";
 
 // This is the string that might go into span()
-$string: last 2 of 12 push 3;
+$string: last 5 of 12 push 3;
 
 // If you want just how many columns it spans:
 @debug parse-string(span, $string);

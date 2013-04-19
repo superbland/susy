@@ -40,6 +40,12 @@
   margin-right: 25em;
 }
 
+.gutter-override {
+  width: 54.54545%;
+  float: left;
+  margin-right: 10px;
+}
+
 .span {
   width: 50%;
   float: left;

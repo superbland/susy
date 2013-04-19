@@ -56,6 +56,10 @@ $column-width: 4em;
   @include margin-output(5, $static: true);
 }
 
+.gutter-override {
+  @include float-span(5, $gutter-width: 10px);
+}
+
 // Asymmetrical math
 // -----------------
 

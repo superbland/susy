@@ -26,6 +26,7 @@
   $gutters        : $gutters,
   $isolate        : false,
   $column-width   : $column-width,
+  $gutter-width   : false,
   $static         : $static-output,
   $flow           : $direction
 ) {
@@ -35,7 +36,13 @@
   $float  : $from;
 
   $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
-  $gutter : get-gutter-width($columns, $gutters, $column-width, $static);
+  $gutter : null;
+
+  @if $gutter-width {
+    $gutter: $gutter-width;
+  } @else {
+    $gutter: get-gutter-width($columns, $gutters, $column-width, $static);
+  }
 
   $before : null;
   $after  : $gutter;

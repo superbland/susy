@@ -7,6 +7,7 @@
   $float      : from($direction),
   $before     : null,
   $after      : null,
+  $property   : margin,
   $flow       : $direction
 ) {
   $to     : to($flow);
@@ -14,21 +15,22 @@
 
   width: $width;
   float: $float;
-  margin-#{$from}: $before;
-  margin-#{$to}: $after;
+  #{$property}-#{$from}: $before;
+  #{$property}-#{$to}: $after;
 }
 
 // Calculate relative span
 @mixin float-span(
   $span,
-  $location       : false,
-  $columns        : $columns,
-  $gutters        : $gutters,
-  $isolate        : false,
-  $column-width   : $column-width,
-  $gutter-width   : false,
-  $static         : $static-output,
-  $flow           : $direction
+  $location         : false,
+  $columns          : $columns,
+  $gutters          : $gutters,
+  $isolate          : false,
+  $column-width     : $column-width,
+  $gutter-override  : false,
+  $static           : $static-output,
+  $gutter-position  : $gutter-position,
+  $flow             : $direction
 ) {
   $to     : to($flow);
   $from   : from($flow);
@@ -38,14 +40,30 @@
   $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
   $gutter : null;
 
-  @if $gutter-width {
-    $gutter: $gutter-width;
+  @if $gutter-override {
+    $gutter: $gutter-override;
   } @else {
     $gutter: get-gutter-width($columns, $gutters, $column-width, $static);
   }
 
-  $before : null;
-  $after  : $gutter;
+  $property     : null;
+  $before       : null;
+  $after        : null;
+
+  @if index($gutter-position,inside) {
+    $property: padding;
+  } @else {
+    $property: margin;
+  }
+
+  @if index($gutter-position,before) {
+    $before: $gutter;
+  } @else if index($gutter-position,after) {
+    $after: $gutter;
+  } @else if index($gutter-position,split) {
+    $before: $gutter/2;
+    $after: $before;
+  }
 
   @if $isolate {
     $before: get-isolation-position($span, $location, $columns, $gutters);
@@ -55,5 +73,5 @@
     $after: null;
   }
 
-  @include float-span-output($width, $float, $before, $after, $flow);
+  @include float-span-output($width, $float, $before, $after, $property, $flow);
 }

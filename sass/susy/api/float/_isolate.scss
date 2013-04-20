@@ -53,7 +53,7 @@
   $width    : relative-column-span($span, $location, $columns, $gutters);
   $width    : if(is-symmetrical($columns), $width, null);
 
-  @include float-span-output($width, $from, null, -100%, $flow);
+  @include float-span-output($width, $from, null, -100%, $flow: $flow);
 
   @for $item from 1 through $line {
     $nth: '#{$line}n + #{$item}';
@@ -62,7 +62,7 @@
       $width: if(is-symmetrical($columns), null, $width);
       $before: get-isolation-position($span, $location, $columns, $gutters);
 
-      @include float-span-output($width, null, $before, null, $flow);
+      @include float-span-output($width, null, $before, null, $flow: $flow);
 
       @if $location == 1 { clear: $from; }
       $location: $location + $span;

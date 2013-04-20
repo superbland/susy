@@ -57,7 +57,7 @@ $column-width: 4em;
 }
 
 .gutter-override {
-  @include float-span(5, $gutter-width: 10px);
+  @include float-span(5, $gutter-override: 10px);
 }
 
 // Asymmetrical math
@@ -102,4 +102,16 @@ $column-width: 4em;
 
 .margin-static {
   @include margin-output(2,1, $static: true);
+}
+
+$gutter-position: outside before;
+
+.gutter-before {
+  @include float-span(2,1);
+}
+
+$gutter-position: inside split;
+
+.gutter-split {
+  @include float-span(2,1);
 }

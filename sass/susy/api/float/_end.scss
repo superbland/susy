@@ -3,12 +3,37 @@
 
 // Last Unit
 @mixin float-last(
-  $columns  : $columns,
-  $gutters  : $gutters,
-  $flow     : $direction
+  $flow: $direction
 ) {
   $to: to($flow);
 
   float: $to;
   margin-#{$to}: 0;
+}
+
+// Nth-Last
+@mixin float-nth-last(
+  $nth: last,
+  $type: child,
+  $flow: $direction
+) {
+  &:#{format-nth($nth,$type)} { @include float-last($flow); }
+}
+
+// First Unit
+@mixin float-first(
+  $flow     : $direction
+) {
+  $from: from($flow);
+
+  margin-#{$from}: 0;
+}
+
+// Nth-First
+@mixin float-nth-last(
+  $nth: first,
+  $type: child,
+  $flow: $direction
+) {
+  &:#{format-nth($nth,$type)} { @include float-first($flow); }
 }

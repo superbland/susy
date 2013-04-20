@@ -27,18 +27,23 @@
   $gutter-position  : $gutter-position,
   $flow             : $direction
 ) {
+  // set flow variables
   $to             : to($flow);
   $from           : from($flow);
   $float          : $from;
 
-  $gutter-static  : if(index($gutter-position,inside-static) or $static, true, false);
-
+  // set width
   $width          : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
+
+  // set gutter width
+  $gutter-static  : if(index($gutter-position,inside-static) or $static, true, false);
   $gutter         : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $gutter-static));
 
+  // initiate potential gutters
   $gutter-before  : null;
   $gutter-after   : null;
 
+  // set gutters
   @if index($gutter-position,before) {
     $gutter-before: $gutter;
   } @else if index($gutter-position,after) {
@@ -48,12 +53,14 @@
     $gutter-after: $gutter-before;
   }
 
+  // initiate potential properties
   $margin-before  : null;
   $margin-after   : null;
   $padding-before : null;
   $padding-after  : null;
 
-  @if index($gutter-position,inside) or index($gutter-position,inside-static) {
+  // set gutter properties
+  @if is-inside-gutter($gutter-position) {
     $padding-before: $gutter-before;
     $padding-after: $gutter-after;
   } @else {
@@ -61,16 +68,21 @@
     $margin-after: $gutter-after;
   }
 
+  // set property overrides
   @if $isolate {
     $margin-before: get-isolation-position($span, $location, $columns, $gutters);
     $margin-after: -100%;
-  } @else if is-last($span, $location, $columns) {
-    $float: $to;
-    $margin-after: null;
-  } @else if is-first($span, $location, $columns) {
-    $margin-before: null;
+  } @else {
+    @if is-last($span, $location, $columns) {
+      $float: $to;
+      $margin-after: null;
+    }
+    @if is-first($span, $location, $columns) {
+      $margin-before: null;
+    }
   }
 
+  // output
   @include float-span-output($width, $float, $flow);
   @include margin-before($margin-before, $flow: $flow);
   @include margin-after($margin-after, $flow: $flow);

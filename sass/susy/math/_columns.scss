@@ -38,7 +38,7 @@
   }
 
   @if is-symmetrical($columns) {
-    $column-sum: is-symmetrical($columns);
+    $column-sum: $columns;
   } @else {
     @each $column in $columns {
       $column-sum: $column-sum + $column;

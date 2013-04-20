@@ -91,25 +91,28 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .symmetrical > .size1of5:first-of-type {
   width: 18.36735%;
   float: left;
-  margin-right: 2.04082%;
+  margin-right: 1.02041%;
 }
 .symmetrical > .size1of5 ~ .size1of5 {
   width: 18.36735%;
   float: right;
+  margin-left: 1.02041%;
 }
 .symmetrical > .size3of5 {
   width: 59.18367%;
   float: left;
-  margin-right: 2.04082%;
+  margin-left: 1.02041%;
+  margin-right: 1.02041%;
 }
 .symmetrical > .size3of5 > .size1of2:first-child {
   width: 48.27586%;
   float: left;
-  margin-right: 3.44828%;
+  margin-right: 1.72414%;
 }
 .symmetrical > .size3of5 > .size1of2 + .size1of2 {
   width: 48.27586%;
   float: right;
+  margin-left: 1.72414%;
 }
 .symmetrical > .size3of5 > .full {
   clear: both;
@@ -118,21 +121,23 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .symmetrical .full .size1of3 {
   width: 31.03448%;
   float: left;
-  margin-right: 3.44828%;
+  margin-right: 1.72414%;
   min-height: 9.75em;
 }
 .symmetrical .full .size2of3 {
   width: 65.51724%;
   float: right;
+  margin-left: 1.72414%;
 }
 .symmetrical .size2of3 .size1of2:first-child {
   width: 47.36842%;
   float: left;
-  margin-right: 5.26316%;
+  margin-right: 2.63158%;
 }
 .symmetrical .size2of3 .size1of2 + .size1of2 {
   width: 47.36842%;
   float: right;
+  margin-left: 2.63158%;
 }
 .symmetrical .size2of3 .full {
   clear: both;

@@ -1,6 +1,18 @@
 // Gutter math
 // ===========
 
+@function is-inside-gutter(
+  $gutter-position: $gutter-position
+) {
+  $inside: false;
+
+  @if index($gutter-position, inside) or index($gutter-position, inside-static) {
+    $inside: true;
+  }
+
+  @return $inside;
+}
+
 // Find relative width of a gutter
 @function relative-gutter-span(
   $columns: $columns,

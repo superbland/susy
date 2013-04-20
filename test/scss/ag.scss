@@ -18,10 +18,14 @@ $gutters: .25 !default;
   $class,
   $c,
   $g,
-  $isolate: false
+  $isolate: false,
+  $gp: outside after
 ) {
   $columns: $c;
   $gutters: $g;
+  $gutter-position: $gp;
+
+  $nested-gutter: if(is-inside-gutter($gutter-position), 0%, false);
 
   .#{$class} {
     @include float-container;
@@ -34,7 +38,7 @@ $gutters: .25 !default;
       ~ .size1of5 { @include float-span(2, last, $isolate: $isolate); }
     }
     > .size3of5 {
-      @include float-span(6,3, $isolate: $isolate);
+      @include float-span(6,3, $isolate: $isolate, $gutter-override: $nested-gutter);
       > .size1of2 {
         &:first-child { @include float-span(3, 1, get-columns(6,3), $isolate: $isolate); }
         + .size1of2 { @include float-span(3, last, get-columns(6,3), $isolate: $isolate); }
@@ -51,7 +55,7 @@ $gutters: .25 !default;
         min-height: rhythm(6.5);
       }
       .size2of3 {
-        @include float-span(4, last, get-columns(6,3), $isolate: $isolate);
+        @include float-span(4, last, get-columns(6,3), $isolate: $isolate, $gutter-override: $nested-gutter);
       }
     }
 
@@ -77,10 +81,10 @@ $gutters: .25 !default;
 $a-class        : symmetrical;
 $a-columns      : 10;
 $a-gutters      : .25;
-$column-width: 4em;
+$column-width   : 4em;
 $show-background-grids: false;
 
-@include ag-test($a-class, $a-columns, $a-gutters);
+@include ag-test($a-class, $a-columns, $a-gutters, $gp: outside split);
 
 // Asymmetrical
 // ------------

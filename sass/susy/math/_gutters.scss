@@ -44,12 +44,13 @@
   $columns: $columns,
   $gutters: $gutters,
   $column-width: $column-width,
+  $container-width: $container-width,
   $static: $static-output
 ) {
   $gutter: null;
 
   @if $static {
-    $gutter: static-gutter-span($gutters, $column-width);
+    $gutter: static-gutter-span($gutters, $column-width, $container-width);
   } @else {
     $gutter: relative-gutter-span($columns, $gutters);
   }

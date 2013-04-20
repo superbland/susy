@@ -7,15 +7,15 @@
   $location,
   $columns: $columns
 ) {
-  $is-last: false;
+  $last: false;
 
   @if $location == "last" or $location == "omega" {
-    $is-last: true;
+    $last: true;
   } @else if $location + ($span - 1) == column-count($columns) {
-    $is-last: true;
+    $last: true;
   }
 
-  @return $is-last;
+  @return $last;
 }
 
 // Find if a span covers the first columns
@@ -24,11 +24,13 @@
   $location,
   $columns: $columns
 ) {
+  $first: false;
+
   @if $location == "first" or $location == "alpha" or $location == 1 {
-    @return true;
-  } @else {
-    @return false;
+    $first: true;
   }
+
+  @return $first;
 }
 
 // Return a numeric location, even if a first/last keyword is used
@@ -37,13 +39,17 @@
   $location,
   $columns: $columns
 ) {
+  $position: false;
+
   @if type-of($location) == number {
-    @return $location;
+    $position: $location;
   } @else if $location == first or $location == alpha {
-    @return 1;
+    $position: 1;
   } @else if $location == last or $location == omega {
-    @return column-count($columns) - $span + 1;
+    $position: column-count($columns) - $span + 1;
   } @else {
-    @return false;
+    $position: false;
   }
+
+  @return $position;
 }

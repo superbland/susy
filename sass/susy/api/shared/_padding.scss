@@ -9,6 +9,8 @@
   $gutters        : $gutters,
   $sides          : before after,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output,
   $flow           : $direction
 ) {
@@ -19,7 +21,7 @@
 
   @if $span {
     @if unitless($span) {
-      $width: get-span-outer-width($span, $location, $columns, $gutters, $column-width, $static);
+      $width: get-span-outer-width($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
     } @else {
       $width: $span;
     }
@@ -39,10 +41,12 @@
   $columns        : $columns,
   $gutters        : $gutters,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output,
   $flow           : $direction
 ) {
-  @include padding-output($span, $location, $columns, $gutters, before, $column-width, $static, $flow);
+  @include padding-output($span, $location, $columns, $gutters, before, $column-width, $gutter-position, $container-width, $static, $flow);
 }
 
 // Add padding after an element
@@ -52,8 +56,10 @@
   $columns        : $columns,
   $gutters        : $gutters,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output,
   $flow           : $direction
 ) {
-  @include padding-output($span, $location, $columns, $gutters, after, $column-width, $static, $flow);
+  @include padding-output($span, $location, $columns, $gutters, after, $column-width, $gutter-position, $container-width, $static, $flow);
 }

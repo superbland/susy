@@ -7,15 +7,16 @@
   $columns          : $columns,
   $gutters          : $gutters,
   $column-width     : $column-width,
+  $gutter-position  : $gutter-position,
   $property         : if($static-output, width, max-width),
   $background-grid  : $show-background-grids
 ) {
   @if not $width {
-    $width: calculate-container-width($columns, $gutters, $column-width);
+    $width: calculate-container-width($columns, $gutters, $column-width, $gutter-position);
   }
 
   @if $background-grid {
-    @include background-grid;
+    @include background-grid();
   }
 
   #{$property}: $width;

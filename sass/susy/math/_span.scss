@@ -69,14 +69,23 @@
   $columns        : $columns,
   $gutters        : $gutters,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output
 ) {
   $width: false;
 
   @if unitless($span) {
     @if $static {
-      $width: static-column-span($span, $location, $columns, $gutters, $column-width);
+      $width: static-column-span($span, $location, $columns, $gutters, $column-width, $container-width);
+      @if is-inside-gutter($gutter-position){
+        $gutter: static-gutter-span($gutters, $column-width, $container-width);
+        $width: $width + $gutter;
+      }
     } @else {
+      @if is-inside-gutter($gutter-position) {
+        $gutters: 0;
+      }
       $width: relative-column-span($span, $location, $columns, $gutters);
     }
   } @else {
@@ -93,13 +102,15 @@
   $columns        : $columns,
   $gutters        : $gutters,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output
 ) {
-  $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
+  $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width,  $static);
   $gutter : 0;
 
-  @if unitless($span) {
-    $gutter : get-gutter-width($columns, $gutters, $column-width, $static);
+  @if unitless($span) and not is-inside-gutter($gutter-position) {
+    $gutter: get-gutter-width($columns, $gutters, $column-width, $container-width, $static);
   }
 
   @return $width + $gutter;

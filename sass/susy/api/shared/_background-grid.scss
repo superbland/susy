@@ -26,15 +26,18 @@ $overlay-switch-location: left bottom !default;
 // Grid Background
 
 @mixin background-grid (
+  $color    : $background-grid-color,
   $columns  : $columns,
   $gutters  : $gutters,
-  $color    : $background-grid-color,
+  $column-width: $column-width,
   $gutter-position: $gutter-position,
+  $container-width: $container-width,
+  $static: $static-output,
   $flow     : $direction
 ) {
   $to     : to($flow);
   $from   : from($flow);
-  $stops  : background-gradient-stops($columns, $gutters, $gutter-position, $color);
+  $stops  : background-gradient-stops($columns, $gutters, $column-width, $gutter-position, $container-width, $static, $color);
 
   @include background(linear-gradient($from, $stops...));
   background: linear-gradient(to $to, $stops...);
@@ -78,7 +81,11 @@ $overlay-switch-location: left bottom !default;
         $selector: $item;
       }
     } @else if type-of($item) == 'list' {
-      $this-columns: $item;
+      @if type-of(nth($item,1)) == string {
+        $gutter-settings: $item;
+      } @else {
+        $this-columns: $item;
+      }
     } @else if type-of($item) == 'number' {
       @if $this-columns {
         $this-gutters: $item;
@@ -148,7 +155,7 @@ $overlay-switch-location: left bottom !default;
         ~ #{$selector}::before,
         ~ body #{$selector}::before {
           @extend %grid-overlay;
-          @include background-grid($this-columns, $this-gutters, $color, $gutter-position);
+          @include background-grid($color, $this-columns, $this-gutters, $column-width, $gutter-position, $container-width, $static-output);
         }
       }
     }
@@ -161,13 +168,16 @@ $overlay-switch-location: left bottom !default;
 @function background-gradient-stops (
   $columns: $columns,
   $gutters: $gutters,
+  $column-width: $column-width,
   $gutter-position: $gutter-position,
+  $container-width: $container-width,
+  $static: $static-output,
   $color: $background-grid-color
 ) {
   $stops: compact();
 
   @for $i from 1 through column-count($columns) {
-    $stops: join($stops, background-column-gradient($i, $columns, $gutters, $gutter-position, $color), comma);
+    $stops: join($stops, background-column-gradient($i, $columns, $gutters, $column-width, $gutter-position, $container-width, $static, $color), comma);
   }
 
   @return $stops;
@@ -180,7 +190,10 @@ $overlay-switch-location: left bottom !default;
   $location,
   $columns: $columns,
   $gutters: $gutters,
+  $column-width: $column-width,
   $gutter-position: $gutter-position,
+  $container-width: $container-width,
+  $static: $static-output,
   $color: $background-grid-color
 ) {
   $stops  : compact();
@@ -189,15 +202,15 @@ $overlay-switch-location: left bottom !default;
   $trans  : transparent;
   $light  : lighten($color, 10%);
 
-  $gutter : relative-gutter-span($columns, $gutters);
+  $gutter : get-gutter-width($columns, $gutters, $column-width, $container-width, $static);
 
   @if $location > 1 {
-    $start: relative-column-span($location - 1, 1, $columns, $gutters) + $gutter;
+    $start: get-span-outer-width($location - 1, 1, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
     $stops: append($stops, $color $start, comma);
   }
 
   @if $location < column-count($columns) {
-    $end: relative-column-span($location, 1, $columns, $gutters);
+    $end: get-span-width($location, 1, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
     $stops: append($stops, $light $end, comma);
     $stops: append($stops, $trans $end, comma);
     $stops: append($stops, $trans $end + $gutter, comma);

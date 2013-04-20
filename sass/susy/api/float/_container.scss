@@ -6,9 +6,10 @@
   $columns          : $columns,
   $gutters          : $gutters,
   $column-width     : $column-width,
+  $gutter-position  : $gutter-position,
   $property         : if($static-output, width, max-width),
   $background-grid  : $show-background-grids
 ) {
   @include pie-clearfix;
-  @include container-output($width, $columns, $gutters, $column-width, $property, $background-grid);
+  @include container-output($width, $columns, $gutters, $column-width, $gutter-position, $property, $background-grid);
 }

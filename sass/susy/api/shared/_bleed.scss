@@ -7,6 +7,8 @@
   $gutters        : $gutters,
   $sides          : before after,
   $column-width   : $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
   $static         : $static-output,
   $flow           : $direction
 ) {
@@ -14,7 +16,7 @@
 
   @if unitless($span) {
     @if is-symmetrical($columns) {
-      $width: get-span-outer-width($span, false, $columns, $gutters, $column-width, $static);
+      $width: get-span-outer-width($span, false, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
     } @else {
       @warn "The bleed feature does not currently support asymmetrical grid calculations.";
     }
@@ -22,7 +24,7 @@
     $width: $span;
   }
 
-  @include margin-output(0 - $width, false, $columns, $gutters, $sides, $column-width, $static, $flow);
-  @include padding-output($width, false, $columns, $gutters, $sides, $column-width, $static, $flow);
+  @include margin-output(0 - $width, false, $columns, $gutters, $sides, $column-width, $gutter-position, $static, $flow);
+  @include padding-output($width, false, $columns, $gutters, $sides, $column-width, $gutter-position, $static, $flow);
 }
 

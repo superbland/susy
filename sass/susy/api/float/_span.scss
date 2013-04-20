@@ -4,12 +4,8 @@
 // Output span
 @mixin float-span-output(
   $width,
-  $float      : from($direction),
-  $flow       : $direction
+  $float: from($direction)
 ) {
-  $to     : to($flow);
-  $from   : from($flow);
-
   width: $width;
   float: $float;
 }
@@ -25,6 +21,7 @@
   $gutter-override  : false,
   $static           : $static-output,
   $gutter-position  : $gutter-position,
+  $container-width  : $container-width,
   $flow             : $direction
 ) {
   // set flow variables
@@ -33,11 +30,11 @@
   $float          : $from;
 
   // set width
-  $width          : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
+  $width          : get-span-width($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
 
   // set gutter width
   $gutter-static  : if(index($gutter-position,inside-static) or $static, true, false);
-  $gutter         : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $gutter-static));
+  $gutter         : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $container-width, $gutter-static));
 
   // initiate potential gutters
   $gutter-before  : null;
@@ -61,7 +58,6 @@
 
   // set gutter properties
   @if is-inside-gutter($gutter-position) {
-    $width: get-span-width($span, $location, $columns, 0, $column-width, $static);
     $padding-before: $gutter-before;
     $padding-after: $gutter-after;
   } @else {
@@ -71,7 +67,7 @@
 
   // set property overrides
   @if $isolate {
-    $margin-before: get-isolation-position($span, $location, $columns, $gutters);
+    $margin-before: get-isolation-position($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
     $margin-after: -100%;
   } @else {
     @if is-last($span, $location, $columns) {
@@ -84,9 +80,9 @@
   }
 
   // output
-  @include float-span-output($width, $float, $flow);
-  @include margin-before($margin-before, $flow: $flow);
-  @include margin-after($margin-after, $flow: $flow);
-  @include padding-before($padding-before, $flow: $flow);
-  @include padding-after($padding-after, $flow: $flow);
+  @include float-span-output($width, $float);
+  margin-#{$from}: $margin-before;
+  margin-#{$to}: $margin-after;
+  padding-#{$from}: $padding-before;
+  padding-#{$to}: $padding-after;
 }

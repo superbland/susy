@@ -83,9 +83,11 @@ $gutters: .25 !default;
 $a-class        : symmetrical;
 $a-columns      : 10;
 $a-gutters      : .25;
+$a-isolate      : false;
+$a-gp           : outside split;
 $column-width   : 4em;
 
-@include ag-test($a-class, $a-columns, $a-gutters, $gp: inside split);
+@include ag-test($a-class, $a-columns, $a-gutters, $a-isolate, $a-gp);
 
 // Asymmetrical
 // ------------
@@ -93,10 +95,12 @@ $column-width   : 4em;
 $b-class          : asymmetrical;
 $b-columns        : .5 2 1.25 1 3.25 1.75 3 2 1 3.75;
 $b-gutters        : .5;
+$b-isolate        : true;
+$b-gp             : ouside after;
 $container-width  : 80%;
 $show-background-grids: false;
 
-@include ag-test($b-class, $b-columns, $b-gutters, true);
+@include ag-test($b-class, $b-columns, $b-gutters, $b-isolate, $b-gp);
 
 $show-background-grids: true;
 
@@ -104,8 +108,8 @@ $show-background-grids: true;
 // ---------------
 
 @include grid-overlay(
-  $a-class $a-columns inside,
-  $b-class $b-columns $b-gutters
+  $a-class $a-columns $a-gutters $a-gp,
+  $b-class $b-columns $b-gutters $b-gp
 );
 
 // Styles
@@ -143,7 +147,8 @@ h1, h2, h3 {
   div {
     @include trailer(.5);
     height: rhythm(1);
-    background: red;
+    background: rgba(red,.5);
+    outline: 1px solid red;
   }
 }
 
@@ -155,6 +160,7 @@ $columns: 1 2 3 .5 3 2 1.5 2 1 .5 2 1;
 $gutters: .25;
 $column-width: 3em;
 $container-width: false;
+$gutter-position: outside after;
 
 .box {
   @include float-container;
@@ -172,7 +178,7 @@ $container-width: false;
     background: rgba(green, .25);
   }
   .bleed {
-    @include bleed-output(30%);
+    @include bleed-output(15%);
     // @include bleed-output(2,6);
     background: rgba(blue, .25);
   }

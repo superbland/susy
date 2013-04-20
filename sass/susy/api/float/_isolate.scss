@@ -3,19 +3,23 @@
 
 // Calculate isolation position
 @function get-isolation-position(
-  $span     : 1,
-  $location : 1,
-  $columns  : $columns,
-  $gutters  : $gutters
+  $span             : 1,
+  $location         : 1,
+  $columns          : $columns,
+  $gutters          : $gutters,
+  $column-width     : $column-width,
+  $gutter-position  : $gutter-position,
+  $container-width  : $container-width,
+  $static           : $static-output
 ) {
   $push   : get-location-position($span, $location, $columns) - 1;
-  $gutter : relative-gutter-span($columns, $gutters);
+  $before : null;
 
   @if $push > 0 {
-    @return relative-column-span($push, 1, $columns, $gutters) + $gutter;
-  } @else {
-    @return null;
+    $before: get-span-outer-width($push, 1, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
   }
+
+  @return $before;
 }
 
 // Isolation Override
@@ -23,12 +27,16 @@
   $location,
   $columns  : $columns,
   $gutters  : $gutters,
+  $column-width: $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
+  $static   : $static-output,
   $flow     : $direction
 ) {
   $to     : to($flow);
   $from   : from($flow);
 
-  $before : get-isolation-position(1, $location, $columns, $gutters);
+  $before : get-isolation-position(1, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
   $after  : -100%;
 
   margin-#{$from}: $before;
@@ -41,6 +49,10 @@
   $columns  : $columns,
   $gutters  : $gutters,
   $selector : child,
+  $column-width: $column-width,
+  $gutter-position: $gutter-position,
+  $container-width: $container-width,
+  $static   : $static-output,
   $flow     : $direction
 ) {
   $to       : to($flow);
@@ -50,21 +62,21 @@
   $context  : column-count($columns);
   $line     : floor($context / $span);
 
-  $width    : relative-column-span($span, $location, $columns, $gutters);
+  $width    : get-span-width($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
   $width    : if(is-symmetrical($columns), $width, null);
 
-  @include float-span-output($width, $from, $flow);
-  @include margin-after(-100%, $flow: $flow);
+  @include float-span-output($width, $from);
+  margin-#{$to}: -100%;
 
   @for $item from 1 through $line {
     $nth: '#{$line}n + #{$item}';
     &:#{format-nth($nth,$selector)} {
-      $width: relative-column-span($span, $location, $columns, $gutters);
+      $width: get-span-width($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
       $width: if(is-symmetrical($columns), null, $width);
-      $before: get-isolation-position($span, $location, $columns, $gutters);
+      $before: get-isolation-position($span, $location, $columns, $gutters, $column-width, $gutter-position, $container-width, $static);
 
-      @include float-span-output($width, null);
-      @include margin-before($before, $flow: $flow);
+      width: $width;
+      margin-#{$from}: $before;
 
       @if $location == 1 { clear: $from; }
       $location: $location + $span;

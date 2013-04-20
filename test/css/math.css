@@ -91,14 +91,14 @@
 }
 
 .gutter-split {
-  width: 31.81818%;
+  width: 33.33333%;
   float: left;
   padding-left: 2.27273%;
   padding-right: 2.27273%;
 }
 
 .gutter-inside-static {
-  width: 31.81818%;
+  width: 33.33333%;
   float: left;
   padding-right: 2em;
 }

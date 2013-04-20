@@ -1,14 +1,56 @@
 // Settings
 // ========
 
+// Grids
+// -----
+
+// The number of columns in a grid layout
+// - <number> for symmetrical columns
+// - <list> for asymmetrical columns
 $columns                : 4               !default;
+
+// The size of a gutter, relative to 1 column-unit
 $gutters                : .25             !default;
 
+// Widths
+// ------
+
+// WARNING: Set EITHER $column-width OR $container-width
+// - We can extrapolate from either one, but not if they conflict
+// - Neither one is needed unless you want static output
+
+// The width of one column
+// - used for determining container-width
+// - used for static output
 $column-width           : false           !default;
+
+// The width of the container
+// - used for determining column-width
+// - used for
 $container-width        : false           !default;
 
-$static-output          : false           !default;
+// Gutter Position
+// ---------------
+
+// WARNING: Inside gutters require the "border-box" or "padding-box" model
+
+// @private
+$acceptable-gutter-positions: inside outside inside-static before after split;
+
+// Move the gutter placement
+// - inside | outside | inside-static
+// - before | after | split
 $gutter-position        : outside after   !default;
+
+// Advanced
+// --------
+
+// Output static instead of relative widths
+$static-output          : false           !default;
+
+// Document flow direction
+// - ltr | rtl
 $direction              : ltr             !default;
 
+// Show or hide background grids on container elements
 $show-background-grids  : true            !default;

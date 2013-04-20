@@ -11,6 +11,8 @@
 $columns: 4   !default;
 $gutters: .25 !default;
 
+* { @include box-sizing(border-box); }
+
 // Complex AG tests
 // ----------------
 
@@ -82,9 +84,8 @@ $a-class        : symmetrical;
 $a-columns      : 10;
 $a-gutters      : .25;
 $column-width   : 4em;
-$show-background-grids: false;
 
-@include ag-test($a-class, $a-columns, $a-gutters, $gp: outside split);
+@include ag-test($a-class, $a-columns, $a-gutters, $gp: inside split);
 
 // Asymmetrical
 // ------------
@@ -93,15 +94,17 @@ $b-class          : asymmetrical;
 $b-columns        : .5 2 1.25 1 3.25 1.75 3 2 1 3.75;
 $b-gutters        : .5;
 $container-width  : 80%;
-$show-background-grids: true;
+$show-background-grids: false;
 
 @include ag-test($b-class, $b-columns, $b-gutters, true);
+
+$show-background-grids: true;
 
 // Grid background
 // ---------------
 
 @include grid-overlay(
-  $a-class $a-columns $a-gutters,
+  $a-class $a-columns inside,
   $b-class $b-columns $b-gutters
 );
 

@@ -29,11 +29,12 @@ $overlay-switch-location: left bottom !default;
   $columns  : $columns,
   $gutters  : $gutters,
   $color    : $background-grid-color,
+  $gutter-position: $gutter-position,
   $flow     : $direction
 ) {
   $to     : to($flow);
   $from   : from($flow);
-  $stops  : background-gradient-stops($columns, $gutters, $color);
+  $stops  : background-gradient-stops($columns, $gutters, $gutter-position, $color);
 
   @include background(linear-gradient($from, $stops...));
   background: linear-gradient(to $to, $stops...);
@@ -64,13 +65,18 @@ $overlay-switch-location: left bottom !default;
   $selector       : false;
   $this-columns   : false;
   $this-gutters   : false;
+  $gutter-settings: compact();
   $color          : $background-grid-color;
 
   @each $item in $grid {
     @if type-of($item) == 'color' {
       $color: $item;
     } @else if type-of($item) == 'string' {
-      $selector: $item;
+      @if index($acceptable-gutter-positions, $item) {
+        $gutter-settings: append($gutter-settings, $item);
+      } @else {
+        $selector: $item;
+      }
     } @else if type-of($item) == 'list' {
       $this-columns: $item;
     } @else if type-of($item) == 'number' {
@@ -82,16 +88,22 @@ $overlay-switch-location: left bottom !default;
     }
   }
 
+  // set defaults
   $this-columns: if($this-columns, $this-columns, $columns);
   $this-gutters: if($this-gutters, $this-gutters, $gutters);
 
+  // remove inside gutters
+  $this-gutters: if(is-inside-gutter($gutter-settings),0,$this-gutters);
+
+  // return paresed list
   @return $selector $this-columns $this-gutters $color;
 }
 
-// A $grid includes 3 parts:
+// A $grid includes 4 parts:
 // - container selector
 // - columns
 // - gutters
+// - gutter-position (only needed for inside gutters)
 @mixin grid-overlay (
   $grids...
 ) {
@@ -136,7 +148,7 @@ $overlay-switch-location: left bottom !default;
         ~ #{$selector}::before,
         ~ body #{$selector}::before {
           @extend %grid-overlay;
-          @include background-grid($this-columns, $this-gutters, $color);
+          @include background-grid($this-columns, $this-gutters, $color, $gutter-position);
         }
       }
     }
@@ -149,12 +161,13 @@ $overlay-switch-location: left bottom !default;
 @function background-gradient-stops (
   $columns: $columns,
   $gutters: $gutters,
+  $gutter-position: $gutter-position,
   $color: $background-grid-color
 ) {
   $stops: compact();
 
   @for $i from 1 through column-count($columns) {
-    $stops: join($stops, background-column-gradient($i, $columns, $gutters, $color), comma);
+    $stops: join($stops, background-column-gradient($i, $columns, $gutters, $gutter-position, $color), comma);
   }
 
   @return $stops;
@@ -167,9 +180,11 @@ $overlay-switch-location: left bottom !default;
   $location,
   $columns: $columns,
   $gutters: $gutters,
+  $gutter-position: $gutter-position,
   $color: $background-grid-color
 ) {
   $stops  : compact();
+  $gutters: if(is-inside-gutter($gutter-position), 0, $gutters);
 
   $trans  : transparent;
   $light  : lighten($color, 10%);

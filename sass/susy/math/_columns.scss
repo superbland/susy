@@ -25,24 +25,33 @@
   @return $count;
 }
 
+// Find the sum of columns, without gutters
+@function column-subtotal(
+  $columns: $columns
+) {
+  $subtotal: 0;
+
+  @if is-symmetrical($columns) {
+    $subtotal: $columns;
+  } @else {
+    @each $column in $columns {
+      $subtotal: $subtotal + $column;
+    }
+  }
+
+  @return $subtotal;
+}
+
 // Find the total sum of column-units in a layout
 @function column-sum(
   $columns: $columns,
   $gutters: $gutters
 ) {
-  $column-sum: 0;
+  $column-sum: column-subtotal($columns);
   $gutter-sum: 0;
 
   @if column-count($columns) > 1 {
     $gutter-sum: (column-count($columns) - 1) * $gutters;
-  }
-
-  @if is-symmetrical($columns) {
-    $column-sum: $columns;
-  } @else {
-    @each $column in $columns {
-      $column-sum: $column-sum + $column;
-    }
   }
 
   @return $column-sum + $gutter-sum;

@@ -61,6 +61,7 @@
 
   // set gutter properties
   @if is-inside-gutter($gutter-position) {
+    $width: get-span-width($span, $location, $columns, 0, $column-width, $static);
     $padding-before: $gutter-before;
     $padding-after: $gutter-after;
   } @else {

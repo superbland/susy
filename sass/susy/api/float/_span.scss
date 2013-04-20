@@ -5,9 +5,6 @@
 @mixin float-span-output(
   $width,
   $float      : from($direction),
-  $before     : null,
-  $after      : null,
-  $property   : margin,
   $flow       : $direction
 ) {
   $to     : to($flow);
@@ -15,8 +12,6 @@
 
   width: $width;
   float: $float;
-  #{$property}-#{$from}: $before;
-  #{$property}-#{$to}: $after;
 }
 
 // Calculate relative span
@@ -38,40 +33,46 @@
   $float  : $from;
 
   $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
-  $gutter : null;
+  $gutter : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $static));
 
-  @if $gutter-override {
-    $gutter: $gutter-override;
-  } @else {
-    $gutter: get-gutter-width($columns, $gutters, $column-width, $static);
-  }
-
-  $property     : null;
-  $before       : null;
-  $after        : null;
-
-  @if index($gutter-position,inside) {
-    $property: padding;
-  } @else {
-    $property: margin;
-  }
+  $gutter-before  : null;
+  $gutter-after   : null;
 
   @if index($gutter-position,before) {
-    $before: $gutter;
+    $gutter-before: $gutter;
   } @else if index($gutter-position,after) {
-    $after: $gutter;
+    $gutter-after: $gutter;
   } @else if index($gutter-position,split) {
-    $before: $gutter/2;
-    $after: $before;
+    $gutter-before: $gutter/2;
+    $gutter-after: $gutter-before;
+  }
+
+  $margin-before  : null;
+  $margin-after   : null;
+  $padding-before : null;
+  $padding-after  : null;
+
+  @if index($gutter-position,inside) {
+    $padding-before: $gutter-before;
+    $padding-after: $gutter-after;
+  } @else {
+    $margin-before: $gutter-before;
+    $margin-after: $gutter-after;
   }
 
   @if $isolate {
-    $before: get-isolation-position($span, $location, $columns, $gutters);
-    $after: -100%;
+    $margin-before: get-isolation-position($span, $location, $columns, $gutters);
+    $margin-after: -100%;
   } @else if is-last($span, $location, $columns) {
     $float: $to;
-    $after: null;
+    $margin-after: null;
+  } @else if is-first($span, $location, $columns) {
+    $margin-before: null;
   }
 
-  @include float-span-output($width, $float, $before, $after, $property, $flow);
+  @include float-span-output($width, $float, $flow);
+  @include margin-before($margin-before, $flow: $flow);
+  @include margin-after($margin-after, $flow: $flow);
+  @include padding-before($padding-before, $flow: $flow);
+  @include padding-after($padding-after, $flow: $flow);
 }

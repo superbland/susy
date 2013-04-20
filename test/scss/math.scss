@@ -107,11 +107,11 @@ $column-width: 4em;
 $gutter-position: outside before;
 
 .gutter-before {
-  @include float-span(2,1);
+  @include float-span(2,3);
 }
 
 $gutter-position: inside split;
 
 .gutter-split {
-  @include float-span(2,1);
+  @include float-span(2,3);
 }

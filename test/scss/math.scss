@@ -104,14 +104,14 @@ $column-width: 4em;
   @include margin-output(2,1, $static: true);
 }
 
-$gutter-position: outside before;
-
 .gutter-before {
-  @include float-span(2,3);
+  @include float-span(2, 3, $gutter-position: outside before);
 }
 
-$gutter-position: inside split;
-
 .gutter-split {
-  @include float-span(2,3);
+  @include float-span(2, 3, $gutter-position: inside split);
+}
+
+.gutter-inside-static {
+  @include float-span(2, 3, $gutter-position: inside-static after);
 }

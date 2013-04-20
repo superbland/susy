@@ -27,13 +27,14 @@
   $gutter-position  : $gutter-position,
   $flow             : $direction
 ) {
-  $to     : to($flow);
-  $from   : from($flow);
+  $to             : to($flow);
+  $from           : from($flow);
+  $float          : $from;
 
-  $float  : $from;
+  $gutter-static  : if(index($gutter-position,inside-static) or $static, true, false);
 
-  $width  : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
-  $gutter : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $static));
+  $width          : get-span-width($span, $location, $columns, $gutters, $column-width, $static);
+  $gutter         : if($gutter-override, $gutter-override, get-gutter-width($columns, $gutters, $column-width, $gutter-static));
 
   $gutter-before  : null;
   $gutter-after   : null;
@@ -52,7 +53,7 @@
   $padding-before : null;
   $padding-after  : null;
 
-  @if index($gutter-position,inside) {
+  @if index($gutter-position,inside) or index($gutter-position,inside-static) {
     $padding-before: $gutter-before;
     $padding-after: $gutter-after;
   } @else {

@@ -59,7 +59,7 @@
 
           @if $min and $max {
             // Both $min and $max
-            @media (min-width: $min) and (max-width: $max) {
+            @media screen and (min-width: $min) and (max-width: $max) {
               @content;
             }
           } @else {
@@ -70,12 +70,12 @@
             }
             @if $min {
               // Min only:
-              @media (min-width: $min) {
+              @media screen and (min-width: $min) {
                 @content;
               }
             } @else {
               // Max only:
-              @media (max-width: $max) {
+              @media screen and (max-width: $max) {
                 @content;
               }
             }
